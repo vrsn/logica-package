@@ -8,5 +8,6 @@ setup(
     url='',
     description='logica',
     packages=find_packages(include=['logica', 'logica.*']),
+    py_modules=["logica"],
     python_requires='>=3.6',
 )
