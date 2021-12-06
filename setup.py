@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='logica',
@@ -7,7 +7,6 @@ setup(
     author_email='',
     url='',
     description='logica',
-    packages=find_packages(include=['logica', 'logica.*']),
-    py_modules=["logica"],
+    packages=['logica'],
     python_requires='>=3.6',
 )
