@@ -7,6 +7,6 @@ setup(
     author_email='',
     url='',
     description='logica',
-    packages=['logica'],
+    packages=['logica', 'logica.common', 'logica.compiler', 'logica.integration_tests', 'logica.parser_py'],
     python_requires='>=3.6',
 )
