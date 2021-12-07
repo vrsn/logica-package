@@ -7,6 +7,7 @@ setup(
     author_email='',
     url='',
     description='logica',
+    package_dir={"": "logica"},
     packages=['logica'] + find_packages(where='logica'),
     python_requires='>=3.6',
 )
