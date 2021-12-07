@@ -29,15 +29,15 @@ ArgMin(arr) = Element(
 ArgMax(arr) = Element(
     SqlExpr("ArgMax({a}, {v}, 1)", {a:, v:}), 0) :- Arrow(a, v) == arr;
 
-ArgMinK(arr, k) =
+ArgMinK(arr, k) = 
     SqlExpr("ArgMin({a}, {v}, {k})", {a:, v:, k:}) :-
-    Arrow(a, v) == arr;
+  Arrow(a, v) == arr;
 
 ArgMaxK(arr, k) =
     SqlExpr("ArgMax({a}, {v}, {k})", {a:, v:, k:}) :- Arrow(a, v) == arr;
 
 Array(arr) =
-    SqlExpr("ArgMin({v}, {a}, null)", {a:, v:}) :- Arrow(a, v) == arr;
+    SqlExpr("ArgMin({v}, {a}, null)", {a:, v:}) :- Arrow(a, v) == arr; 
 
 ReadFile(filename) = SqlExpr("ReadFile({filename})", {filename:});
 
@@ -45,4 +45,6 @@ ReadJson(filename) = ReadFile(filename);
 
 WriteFile(filename, content:) = SqlExpr("WriteFile({filename}, {content})",
                                         {filename:, content:});
+
+Fingerprint(s) = SqlExpr("Fingerprint({s})", {s:});
 """
