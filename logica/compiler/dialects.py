@@ -309,11 +309,56 @@ class Presto(Dialect):
     return rule
 
 
+class Snowflake(Dialect):
+    """Snowflake dialect"""
+    def Name(self):
+        return 'Snowflake'
+
+    def BuiltInFunctions(self):
+        """
+        Should we use CAST or TRY_CAST?
+        CAST     ? ok : raise error
+        TRY_CAST ? ok : returns NULL
+        """
+        return {
+            'Range': 'SEQUENCE(0, %s - 1)',
+            'ToString': 'CAST(%s AS VARCHAR)',
+            'ToInt64': 'CAST(%s AS BIGINT)',
+            'ToFloat64': 'CAST(%s AS DOUBLE)',
+            'AnyValue': 'ANY_VALUE(%s)',
+            'ArrayConcat': 'ARRAY_CAT(%s, %s)'
+        }
+
+    def InfixOperators(self):
+        return {
+            '++': 'CONCAT(%s, %s)',
+        }
+
+    def Subscript(self, record, subscript):
+        return '%s:%s' % (record, subscript)
+
+    # def LibraryProgram(self):
+    #     return trino_library.library
+
+    def UnnestPhrase(self):
+        return 'UNNEST({0}) as pushkin({1})'
+
+    def ArrayPhrase(self):
+        return 'ARRAY_AGG(%s)'
+
+    def GroupBySpecBy(self):
+        return 'index'
+
+    def DecorateCombineRule(self, rule, var):
+        return rule
+
+
 DIALECTS = {
     'bigquery': BigQueryDialect,
     'sqlite': SqLiteDialect,
     'psql': PostgreSQL,
     'presto': Presto,
-    'trino': Trino
+    'trino': Trino,
+    'snowflake': Snowflake
 }
 
