@@ -24,12 +24,15 @@ if '.' not in __package__:
   from compiler.dialect_libraries import sqlite_library
   from compiler.dialect_libraries import trino_library
   from compiler.dialect_libraries import presto_library
+  from compiler.dialect_libraries import snowflake_library
 else:
   from ..compiler.dialect_libraries import bq_library
   from ..compiler.dialect_libraries import psql_library
   from ..compiler.dialect_libraries import sqlite_library
   from ..compiler.dialect_libraries import trino_library
   from ..compiler.dialect_libraries import presto_library
+  from compiler.dialect_libraries import snowflake_library
+
 
 def Get(engine):
   return DIALECTS[engine]()
@@ -315,13 +318,8 @@ class Snowflake(Dialect):
         return 'Snowflake'
 
     def BuiltInFunctions(self):
-        """
-        Should we use CAST or TRY_CAST?
-        CAST     ? ok : raise error
-        TRY_CAST ? ok : returns NULL
-        """
         return {
-            'Range': 'SEQUENCE(0, %s - 1)',
+            'Range': '(SELECT seq4() FROM TABLE(generator(rowcount => %s)))',
             'ToString': 'CAST(%s AS VARCHAR)',
             'ToInt64': 'CAST(%s AS BIGINT)',
             'ToFloat64': 'CAST(%s AS DOUBLE)',
@@ -337,8 +335,8 @@ class Snowflake(Dialect):
     def Subscript(self, record, subscript):
         return '%s:%s' % (record, subscript)
 
-    # def LibraryProgram(self):
-    #     return trino_library.library
+    def LibraryProgram(self):
+        return snowflake_library.library
 
     def UnnestPhrase(self):
         return 'UNNEST({0}) as pushkin({1})'
