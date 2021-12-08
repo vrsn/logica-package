@@ -338,11 +338,14 @@ class Snowflake(Dialect):
     def LibraryProgram(self):
         return snowflake_library.library
 
+    # def UnnestPhrase(self):
+    #     return 'UNNEST({0}) as pushkin({1})'
+
     def UnnestPhrase(self):
-        return 'UNNEST({0}) as pushkin({1})'
+        return '(select value as {1} from table(flatten(INPUT => {0})))'
 
     def ArrayPhrase(self):
-        return 'ARRAY_AGG(%s)'
+        return 'ARRAY_CONSTRUCT(%s)'
 
     def GroupBySpecBy(self):
         return 'index'
