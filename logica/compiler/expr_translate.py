@@ -61,6 +61,7 @@ class QL(object):
                     'FROM UNNEST(%s) as x)'),
       'IsNull': '(%s IS NULL)',
       'Join': 'ARRAY_TO_STRING(%s)',
+      'JsonExtractPathText': 'JSON_EXTRACT_PATH_TEXT({0}, {1})',
       'Like': '({0} LIKE {1})',
       'Range': 'GENERATE_ARRAY(0, %s - 1)',
       'RangeOf': 'GENERATE_ARRAY(0, ARRAY_LENGTH(%s) - 1)',
@@ -209,7 +210,7 @@ class QL(object):
                            'ParseTimestamp', 'FormatTimestamp',
                            'TimestampAddDays', 'Split', 'Element',
                            'Concat', 'DateAddDay', 'DateDiffDay',
-                           'Join', 'MagicalEntangle']
+                           'Join', 'MagicalEntangle', 'JsonExtractPathText']
       if f in arity_2_functions:
         return (2, 2)
       return (1, 1)

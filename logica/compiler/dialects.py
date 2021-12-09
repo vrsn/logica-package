@@ -333,7 +333,7 @@ class Snowflake(Dialect):
         }
 
     def Subscript(self, record, subscript):
-        return '%s:%s' % (record, subscript)
+        return '%s.%s' % (record, subscript)
 
     def LibraryProgram(self):
         return snowflake_library.library
