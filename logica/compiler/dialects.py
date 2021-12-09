@@ -319,12 +319,12 @@ class Snowflake(Dialect):
 
     def BuiltInFunctions(self):
         return {
-            'Range': '(SELECT seq4() FROM TABLE(generator(rowcount => %s)))',
+            'Range': '(SELECT array_agg(seq4()) FROM TABLE(generator(rowcount => %s)))',
             'ToString': 'CAST(%s AS VARCHAR)',
             'ToInt64': 'CAST(%s AS BIGINT)',
             'ToFloat64': 'CAST(%s AS DOUBLE)',
             'AnyValue': 'ANY_VALUE(%s)',
-            'ArrayConcat': 'ARRAY_CAT(%s, %s)'
+            'ArrayConcat': 'ARRAY_CAT({0}, {1})'
         }
 
     def InfixOperators(self):
@@ -342,7 +342,7 @@ class Snowflake(Dialect):
     #     return 'UNNEST({0}) as pushkin({1})'
 
     def UnnestPhrase(self):
-        return '(select value as {1} from table(flatten(INPUT => {0})))'
+        return '(SELECT VALUE AS {1} FROM TABLE(FLATTEN(INPUT => {0})))'
 
     def ArrayPhrase(self):
         return 'ARRAY_CONSTRUCT(%s)'
