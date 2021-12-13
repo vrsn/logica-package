@@ -62,7 +62,7 @@ class QL(object):
       'IsNull': '(%s IS NULL)',
       'Join': 'ARRAY_TO_STRING(%s)',
       #'JsonExtractScalar': 'JSON_EXTRACT_PATH_TEXT({0}, {1})',
-      'JsonExtractScalar': '{0}:{1}',
+      'JsonExtractScalar_snowflake': '{0}:{1}',
       'Like': '({0} LIKE {1})',
       'Range': 'GENERATE_ARRAY(0, %s - 1)',
       'RangeOf': 'GENERATE_ARRAY(0, ARRAY_LENGTH(%s) - 1)',
@@ -211,7 +211,7 @@ class QL(object):
                            'ParseTimestamp', 'FormatTimestamp',
                            'TimestampAddDays', 'Split', 'Element',
                            'Concat', 'DateAddDay', 'DateDiffDay',
-                           'Join', 'MagicalEntangle', 'JsonExtractScalar']
+                           'Join', 'MagicalEntangle', 'JsonExtractScalar_snowflake']
       if f in arity_2_functions:
         return (2, 2)
       return (1, 1)
@@ -443,11 +443,10 @@ class QL(object):
 
     if 'call' in expression:
       call = expression['call']
-      #print(call['predicate_name'])
       arguments = self.ConvertRecord(call['record'])
-      if call['predicate_name'] == "JsonExtractScalar":
-          #delete dollar sign and quotes from argumet
-          arguments[1] = arguments[1].strip("'").replace("$.", '')
+      if call['predicate_name'] == "JsonExtractScalar" and self.dialect.Name() == "Snowflake":
+           #delete dollar sign and quotes from argument
+           arguments[1] = arguments[1].strip("'").replace("$.", '')
       if call['predicate_name'] in self.ANALYTIC_FUNCTIONS:
         return self.ConvertAnalytic(call)
       if call['predicate_name'] == 'SqlExpr':
