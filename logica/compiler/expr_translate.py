@@ -61,6 +61,8 @@ class QL(object):
                     'FROM UNNEST(%s) as x)'),
       'IsNull': '(%s IS NULL)',
       'Join': 'ARRAY_TO_STRING(%s)',
+      #'JsonExtractScalar': 'JSON_EXTRACT_PATH_TEXT({0}, {1})',
+      'JsonExtractScalar_snowflake': '{0}:{1}',
       'Like': '({0} LIKE {1})',
       'Range': 'GENERATE_ARRAY(0, %s - 1)',
       'RangeOf': 'GENERATE_ARRAY(0, ARRAY_LENGTH(%s) - 1)',
@@ -209,7 +211,7 @@ class QL(object):
                            'ParseTimestamp', 'FormatTimestamp',
                            'TimestampAddDays', 'Split', 'Element',
                            'Concat', 'DateAddDay', 'DateDiffDay',
-                           'Join', 'MagicalEntangle']
+                           'Join', 'MagicalEntangle', 'JsonExtractScalar_snowflake']
       if f in arity_2_functions:
         return (2, 2)
       return (1, 1)
@@ -242,7 +244,7 @@ class QL(object):
     return str(literal['number'])
 
   def StrLiteral(self, literal):
-    if self.dialect.Name() in ["PostgreSQL", "Presto", "Trino", "SqLite"]:
+    if self.dialect.Name() in ["Snowflake", "PostgreSQL", "Presto", "Trino", "SqLite"]:
       # TODO: Do this safely.
       return '\'%s\'' % literal['the_string']
     return json.dumps(literal['the_string'], ensure_ascii=False)
@@ -417,7 +419,7 @@ class QL(object):
 
   def ConvertToSql(self, expression):
     """Converting Logica expression into SQL."""
-    # print('EXPR:', expression)
+    #print('EXPR:', expression)
     # Variables.
     if 'variable' in expression:
       return self.Variable(expression['variable'])
@@ -442,6 +444,9 @@ class QL(object):
     if 'call' in expression:
       call = expression['call']
       arguments = self.ConvertRecord(call['record'])
+      if call['predicate_name'] == "JsonExtractScalar" and self.dialect.Name() == "Snowflake":
+           #delete dollar sign and quotes from argument
+           arguments[1] = arguments[1].strip("'").replace("$.", '')
       if call['predicate_name'] in self.ANALYTIC_FUNCTIONS:
         return self.ConvertAnalytic(call)
       if call['predicate_name'] == 'SqlExpr':

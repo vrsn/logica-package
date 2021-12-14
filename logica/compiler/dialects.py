@@ -24,12 +24,15 @@ if '.' not in __package__:
   from compiler.dialect_libraries import sqlite_library
   from compiler.dialect_libraries import trino_library
   from compiler.dialect_libraries import presto_library
+  from compiler.dialect_libraries import snowflake_library
 else:
   from ..compiler.dialect_libraries import bq_library
   from ..compiler.dialect_libraries import psql_library
   from ..compiler.dialect_libraries import sqlite_library
   from ..compiler.dialect_libraries import trino_library
   from ..compiler.dialect_libraries import presto_library
+  from compiler.dialect_libraries import snowflake_library
+
 
 def Get(engine):
   return DIALECTS[engine]()
@@ -309,11 +312,55 @@ class Presto(Dialect):
     return rule
 
 
+class Snowflake(Dialect):
+    """Snowflake dialect"""
+    def Name(self):
+        return 'Snowflake'
+
+    def BuiltInFunctions(self):
+        return {
+            'Range': '(SELECT array_agg(seq4()) FROM TABLE(generator(rowcount => %s)))',
+            'ToString': 'CAST(%s AS VARCHAR)',
+            'ToInt64': 'CAST(%s AS BIGINT)',
+            'ToFloat64': 'CAST(%s AS DOUBLE)',
+            'AnyValue': 'ANY_VALUE(%s)',
+            'ArrayConcat': 'ARRAY_CAT({0}, {1})',
+            'JsonExtractScalar': '{0}:{1}'
+        }
+
+    def InfixOperators(self):
+        return {
+            '++': 'CONCAT(%s, %s)',
+        }
+
+    def Subscript(self, record, subscript):
+        return '%s.%s' % (record, subscript)
+
+    def LibraryProgram(self):
+        return snowflake_library.library
+
+    # def UnnestPhrase(self):
+    #     return 'UNNEST({0}) as pushkin({1})'
+
+    def UnnestPhrase(self):
+        return '(SELECT VALUE AS {1} FROM TABLE(FLATTEN(INPUT => {0})))'
+
+    def ArrayPhrase(self):
+        return 'ARRAY_CONSTRUCT(%s)'
+
+    def GroupBySpecBy(self):
+        return 'index'
+
+    def DecorateCombineRule(self, rule, var):
+        return rule
+
+
 DIALECTS = {
     'bigquery': BigQueryDialect,
     'sqlite': SqLiteDialect,
     'psql': PostgreSQL,
     'presto': Presto,
-    'trino': Trino
+    'trino': Trino,
+    'snowflake': Snowflake
 }
 
