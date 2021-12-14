@@ -244,7 +244,7 @@ class QL(object):
     return str(literal['number'])
 
   def StrLiteral(self, literal):
-    if self.dialect.Name() in ["Snowflake", "PostgreSQL", "Presto", "Trino", "SqLite"]:
+    if self.dialect.Name() in ["Dremio", "Snowflake", "PostgreSQL", "Presto", "Trino", "SqLite"]:
       # TODO: Do this safely.
       return '\'%s\'' % literal['the_string']
     return json.dumps(literal['the_string'], ensure_ascii=False)
