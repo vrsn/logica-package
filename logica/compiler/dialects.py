@@ -388,6 +388,8 @@ class Dremio(Dialect):
     def UnnestPhrase(self):
         return 'FLATTEN({0}) AS chekhov({1})'
 
+    # No arrays in Dremio
+
     # def ArrayPhrase(self):
     #     return 'ARRAY_CONSTRUCT(%s)'
 
