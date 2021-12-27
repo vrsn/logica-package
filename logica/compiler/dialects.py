@@ -365,12 +365,13 @@ class Dremio(Dialect):
 
     def BuiltInFunctions(self):
         return {
-            'Range': '(SELECT array_agg(seq4()) FROM TABLE(generator(rowcount => %s)))',
+            #'Range': '(SELECT array_agg(seq4()) FROM TABLE(generator(rowcount => %s)))',
             'ToString': 'CAST(%s AS VARCHAR)',
             'ToInt64': 'CAST(%s AS BIGINT)',
             'ToFloat64': 'CAST(%s AS DOUBLE)',
             'AnyValue': 'ANY_VALUE(%s)',
             #'ArrayConcat': 'ARRAY_CAT({0}, {1})',
+            #'JsonExtractScalar': 'CONVERT_FROM({0}.{1}, \'JSON\')'
             'JsonExtractScalar': '{0}.{1}'
         }
 
@@ -386,9 +387,7 @@ class Dremio(Dialect):
         return dremio_library.library
 
     def UnnestPhrase(self):
-        return 'FLATTEN({0}) AS chekhov({1})'
-
-    # No arrays in Dremio
+        return 'FLATTEN({0}) AS pushkin({1})'
 
     # def ArrayPhrase(self):
     #     return 'ARRAY_CONSTRUCT(%s)'
