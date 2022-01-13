@@ -372,7 +372,8 @@ class Dremio(Dialect):
             'AnyValue': 'ANY_VALUE(%s)',
             #'ArrayConcat': 'ARRAY_CAT({0}, {1})',
             #'JsonExtractScalar': 'CONVERT_FROM({0}.{1}, \'JSON\')'
-            'JsonExtractScalar': '{0}.{1}'
+            'JsonExtractScalar': '{0}.{1}',
+            'IsNull': 'ISNULL(%s)'
         }
 
     def InfixOperators(self):

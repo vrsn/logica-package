@@ -328,7 +328,7 @@ class QL(object):
         ['the_string']['the_string'])
     if 'record' not in record['field_value'][1]['value']['expression']:
       raise self.exception_maker(
-          'Sectond argument of SqlExpr must be record literal. Got: %s' %
+          'Second argument of SqlExpr must be record literal. Got: %s' %
           top_record[1])
     args = self.ConvertRecord(
         record['field_value'][1]['value']['expression']['record'])
@@ -442,9 +442,13 @@ class QL(object):
     if 'call' in expression:
       call = expression['call']
       arguments = self.ConvertRecord(call['record'])
-      if call['predicate_name'] == "JsonExtractScalar" and (self.dialect.Name() == "Snowflake" or self.dialect.Name() == "Dremio"):
-           #delete dollar sign and quotes from argument
-           arguments[1] = arguments[1].strip("'").replace("$.", '')
+      if call['predicate_name'] == "JsonExtractScalar" and self.dialect.Name(
+      ) in [
+          "Snowflake",
+          "Dremio",
+      ]:
+        #delete dollar sign and quotes from argument
+        arguments[1] = arguments[1].strip("'").replace("$.", '')
       if call['predicate_name'] in self.ANALYTIC_FUNCTIONS:
         return self.ConvertAnalytic(call)
       if call['predicate_name'] == 'SqlExpr':
