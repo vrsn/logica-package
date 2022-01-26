@@ -47,4 +47,7 @@ WriteFile(filename, content:) = SqlExpr("WriteFile({filename}, {content})",
                                         {filename:, content:});
 
 Fingerprint(s) = SqlExpr("Fingerprint({s})", {s:});
+
+JsonArrayContains(json_value, value) =
+  SqlExpr("EXISTS (SELECT 1 FROM json_each({json_value}) WHERE json_each.value LIKE {value})", {json_value:, value:});
 """

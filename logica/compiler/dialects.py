@@ -102,6 +102,9 @@ class SqLiteDialect(Dialect):
         'Least': 'MIN(%s)',
         'Greatest': 'MAX(%s)',
         'ToString': 'CAST(%s AS TEXT)',
+        'JsonExtract': 'JSON_EXTRACT({0}, {1})',
+        'JsonExtractScalar': 'JSON_EXTRACT({0}, {1})',
+        'JsonArrayContains': 'EXISTS (SELECT 1 FROM json_each({0}) WHERE value = "{1}")',
     }
 
   def DecorateCombineRule(self, rule, var):
