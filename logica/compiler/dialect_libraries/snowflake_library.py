@@ -31,6 +31,6 @@ RExtract(s, p, g) = SqlExpr(
 
 ElementAt(array, index) = (SqlExpr("GET({array}, {index})", {array:, index:}));
 
-# JsonArrayContains(json_value, value) =
-#   SqlExpr("Array_Contains({value}::variant, To_Array({json_value}))", {json_value:, value:});
+JsonArrayContains(json_value, value) =
+   SqlExpr("Array_Contains({value}::variant, To_Array({json_value}))", {json_value:, value:});
 """
