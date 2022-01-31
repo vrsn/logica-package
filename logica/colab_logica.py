@@ -209,8 +209,6 @@ class SnowflakeRunner(object):
       self.engine = DB_ENGINE
       self.connection = DB_CONNECTION
 
-      DB_ENGINE = self.engine
-      DB_CONNECTION = self.connection
 
   def __call__(self, sql, engine, is_final):
     return RunSQL(sql, engine, self.connection, is_final)
@@ -226,7 +224,8 @@ def Logica(line, cell, run_query):
         e.ShowMessage()
         return
     program = universe.LogicaProgram(parsed_rules)
-    engine = program.annotations.Engine()
+    global DB_ENGINE
+    engine = program.annotations.Engine() if DB_ENGINE is None else DB_ENGINE
 
     if engine == "bigquery" and not BQ_READY:
         print(
