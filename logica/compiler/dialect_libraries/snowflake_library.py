@@ -28,4 +28,9 @@ RMatch(s, p) = SqlExpr(
 RExtract(s, p, g) = SqlExpr(
   "REGEXP_SUBSTR({s}, {p}, {g})",
   {s: s, p: p, g: g});
+
+ElementAt(array, index) = (SqlExpr("GET({array}, {index})", {array:, index:}));
+
+# JsonArrayContains(json_value, value) =
+#   SqlExpr("Array_Contains({value}::variant, To_Array({json_value}))", {json_value:, value:});
 """
