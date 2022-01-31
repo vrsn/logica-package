@@ -79,6 +79,11 @@ def SetDbConnection(connection):
     DB_CONNECTION = connection
 
 
+def SetEngine(engine):
+    global DB_ENGINE
+    DB_ENGINE = engine
+
+
 def EnsureAuthenticatedUser():
     global USER_AUTHENTICATED
     global PROJECT
