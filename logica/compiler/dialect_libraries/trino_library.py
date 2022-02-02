@@ -43,4 +43,7 @@ RMatch(s, p) = SqlExpr(
 RExtract(s, p, g) = SqlExpr(
   "REGEXP_EXTRACT({s}, {p}, {g})",
   {s: s, p: p, g: g});
+
+JsonArrayContains(json_value, value) =
+  SqlExpr("json_array_contains({json_value}, {value})", {json_value:, value:});
 """

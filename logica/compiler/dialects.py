@@ -184,7 +184,7 @@ class SqLiteDialect(Dialect):
     }
 
   def Subscript(self, record, subscript):
-    return 'JSON_EXTRACT(%s, "$.%s")' % (record, subscript)
+    return '%s.%s' % (record, subscript)
 
   def LibraryProgram(self):
     return sqlite_library.library
