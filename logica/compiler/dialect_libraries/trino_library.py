@@ -46,4 +46,10 @@ RExtract(s, p, g) = SqlExpr(
 
 JsonArrayContains(json_value, value) =
   SqlExpr("json_array_contains({json_value}, {value})", {json_value:, value:});
+  
+ToJsonArray(col) = SqlExpr("CAST({col} AS ARRAY<JSON>)", {col:});
+
+ToJson(col) = SqlExpr("CAST({col} AS JSON)", {col:});
+
+GetField(obj, field) =  (SqlExpr("JSON_EXTRACT_SCALAR({obj}, {field})", {obj:, field:}));
 """
