@@ -52,4 +52,6 @@ ToJsonArray(col) = SqlExpr("CAST({col} AS ARRAY<JSON>)", {col:});
 ToJson(col) = SqlExpr("CAST({col} AS JSON)", {col:});
 
 GetField(obj, field) =  (SqlExpr("JSON_EXTRACT_SCALAR({obj}, {field})", {obj:, field:}));
+
+ArrayJoin(array, delimiter) = SqlExpr("array_join({array}, {delimiter})", {array:, delimiter:});
 """
