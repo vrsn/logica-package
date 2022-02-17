@@ -166,11 +166,15 @@ class Annotations(object):
     for flag, a in self.annotations['@ResetFlagValue'].items():
       programmatic_flag_values[flag] = a.get('1', '${%s}' % flag)
 
-    if not set(self.user_flags) <= set(default_values):
-      raise rule_translate.RuleCompileException(
-          'Undefined flags used: %s' % list(
-              set(self.user_flags) - set(default_values)),
-          str(set(self.user_flags) - set(default_values)))
+    # Removed the following check,
+    # as there is no reason to crash when extra flags are provided
+
+    # if not set(self.user_flags) <= set(default_values):
+    #   raise rule_translate.RuleCompileException(
+    #       'Undefined flags used: %s' % list(
+    #           set(self.user_flags) - set(default_values)),
+    #       str(set(self.user_flags) - set(default_values)))
+
     flag_values = default_values
     flag_values.update(**programmatic_flag_values)
     flag_values.update(**self.user_flags)
