@@ -103,7 +103,7 @@ class SqLiteDialect(Dialect):
         'Greatest': 'MAX(%s)',
         'ToString': 'CAST(%s AS TEXT)',
         'JsonExtract': 'JSON_EXTRACT({0}, {1})',
-        'JsonExtractScalar': 'JSON_EXTRACT({0}, {1})',
+        'JsonExtractScalar': 'CAST(JSON_EXTRACT({0}, {1}) AS TEXT)',
     }
 
   def DecorateCombineRule(self, rule, var):
