@@ -30,6 +30,7 @@ RExtract(s, p, g) = SqlExpr(
   {s: s, p: p, g: g});
   
 ArrayJoin(array, delimiter) = SqlExpr(
-  “ARRAY_TO_STRING({array}, {delimiter})“,
-  {array:, delimiter:});
+  "ARRAY_TO_STRING({array}, {delimiter})",
+  {array:, delimiter:}); 
+   
 """
