@@ -32,5 +32,16 @@ RExtract(s, p, g) = SqlExpr(
 ArrayJoin(array, delimiter) = SqlExpr(
   "ARRAY_TO_STRING({array}, {delimiter})",
   {array:, delimiter:}); 
-   
+
+JsonParse(json) = SqlExpr(
+  "PARSE_JSON({json})", 
+  {json:});
+  
+JsonArrayGet(arr, index) = SqlExpr(
+  "GET(PARSE_JSON({arr}), {index})", 
+  {arr:, index:});
+
+JsonFormat(json) = SqlExpr(
+  "TO_JSON({json})", 
+  {json:}); 
 """
