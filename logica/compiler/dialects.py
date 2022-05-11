@@ -339,7 +339,9 @@ class Snowflake(Dialect):
         }
 
     def Subscript(self, record, subscript):
-        return '%s.%s' % (record, subscript)
+        # I don't know how reliable this is; probably not at all
+        splitter = ':' if '.' in record else '.'
+        return f"{record}{splitter}{subscript}"
 
     def LibraryProgram(self):
         return snowflake_library.library
