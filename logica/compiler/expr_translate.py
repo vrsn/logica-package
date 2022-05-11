@@ -301,6 +301,12 @@ class QL(object):
                       self.ConvertToSql(f_v['value']['expression']) )
           for f_v in record['field_value'])
       return 'JSON_OBJECT(%s)' % arguments_str
+    if self.dialect.Name() == "Snowflake":
+      arguments_str = ', '.join(
+          "'%s', %s" % (f_v['field'],
+                      self.ConvertToSql(f_v['value']['expression']))
+         for f_v in record['field_value'])
+      return 'OBJECT_CONSTRUCT(%s)' % arguments_str
     arguments_str = ', '.join(
         '%s AS %s' % (self.ConvertToSql(f_v['value']['expression']),
                       f_v['field'])
