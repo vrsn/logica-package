@@ -44,4 +44,8 @@ JsonArrayGet(arr, index) = SqlExpr(
 JsonFormat(json) = SqlExpr(
   "TO_JSON({json})", 
   {json:}); 
+
+ParseStrTimestamp(date_string) = SqlExpr(
+  "TRY_TO_TIMESTAMP({date_string})",
+  {date_string:});
 """
