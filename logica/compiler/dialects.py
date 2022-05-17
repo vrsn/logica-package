@@ -346,9 +346,6 @@ class Snowflake(Dialect):
     def LibraryProgram(self):
         return snowflake_library.library
 
-    # def UnnestPhrase(self):
-    #     return 'UNNEST({0}) as pushkin({1})'
-
     def UnnestPhrase(self):
         return 'LATERAL FLATTEN(INPUT => {0}) AS pushkin(seq,key,path,index,{1})'
 
