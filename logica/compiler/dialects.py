@@ -350,7 +350,7 @@ class Snowflake(Dialect):
     #     return 'UNNEST({0}) as pushkin({1})'
 
     def UnnestPhrase(self):
-        return 'LATERAL FLATTEN(INPUT => {0}) AS T(seq,key,path,index,{1})'
+        return 'LATERAL FLATTEN(INPUT => {0}) AS pushkin(seq,key,path,index,{1})'
 
     def ArrayPhrase(self):
         return 'ARRAY_CONSTRUCT(%s)'
