@@ -36,6 +36,15 @@ Array(a) = SqlExpr(
   "ARRAY_AGG({value} order by {arg})",
   {arg: a.arg, value: a.value});
 
+ArraySize(array) = SqlExpr(
+  "CARDINALITY({array})", {array:});
+
+ArrayJoin(array, delimiter) = SqlExpr(
+  "ARRAY_JOIN({array}, {delimiter})", {array:, delimiter:});
+
+ElementAt(array, index) = SqlExpr(
+  "ELEMENT_AT({array}, {index})", {array:, index:});
+
 RMatch(s, p) = SqlExpr(
   "REGEXP_LIKE({s}, {p})",
   {s: s, p: p});
@@ -44,14 +53,26 @@ RExtract(s, p, g) = SqlExpr(
   "REGEXP_EXTRACT({s}, {p}, {g})",
   {s: s, p: p, g: g});
 
-JsonArrayContains(json_value, value) =
-  SqlExpr("json_array_contains({json_value}, {value})", {json_value:, value:});
+JsonArrayContains(json_value, value) = SqlExpr(
+  "JSON_ARRAY_CONTAINS({json_value}, {value})", {json_value:, value:});
   
-ToJsonArray(col) = SqlExpr("CAST({col} AS ARRAY<JSON>)", {col:});
+ToJsonArray(col) = SqlExpr(
+  "CAST({col} AS ARRAY<JSON>)", {col:});
 
-ToJson(col) = SqlExpr("CAST({col} AS JSON)", {col:});
+ToJson(col) = SqlExpr(
+  "CAST({col} AS JSON)", {col:});
 
-GetField(obj, field) =  (SqlExpr("JSON_EXTRACT_SCALAR({obj}, {field})", {obj:, field:}));
+JsonParse(string) = SqlExpr(
+  "JSON_PARSE({string})", {string:});
 
-ArrayJoin(array, delimiter) = SqlExpr("array_join({array}, {delimiter})", {array:, delimiter:});
+GetField(obj, field) =  SqlExpr(
+  "JSON_EXTRACT_SCALAR({obj}, {field})", {obj:, field:});
+
+Now() = SqlExpr(
+  "Now()", {});
+
+DaysDiff(start_date:, end_date:) = DateDiff("day", start_date, end_date);
+
+From_Unixtime(string) = SqlExpr(
+  "FROM_ISO8601_TIMESTAMP_NANOS({string})", {string:});
 """
