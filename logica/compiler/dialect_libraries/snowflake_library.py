@@ -28,7 +28,10 @@ RMatch(s, p) = SqlExpr(
 RExtract(s, p, g) = SqlExpr(
   "REGEXP_SUBSTR({s}, {p}, {g})",
   {s: s, p: p, g: g});
-  
+
+ElementAt(array, index) = SqlExpr(
+  "GET({array}, {index})", {array:, index:});
+
 ArrayJoin(array, delimiter) = SqlExpr(
   "ARRAY_TO_STRING({array}, {delimiter})",
   {array:, delimiter:}); 
