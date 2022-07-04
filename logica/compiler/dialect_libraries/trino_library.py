@@ -45,6 +45,8 @@ ArrayJoin(array, delimiter) = SqlExpr(
 ElementAt(array, index) = SqlExpr(
   "ELEMENT_AT({array}, {index})", {array:, index:});
 
+ArrayGetVariant(array, index) = SqlExpr("CAST(json_array_get({array}, {index}) AS VARCHAR)", {array:, index:});
+
 RMatch(s, p) = SqlExpr(
   "REGEXP_LIKE({s}, {p})",
   {s: s, p: p});
