@@ -19,6 +19,7 @@
 import copy
 
 import json
+import re
 
 if '.' not in __package__:
   from common import color
@@ -338,7 +339,11 @@ class QL(object):
           top_record[1])
     args = self.ConvertRecord(
         record['field_value'][1]['value']['expression']['record'])
-    return template.format(**args)
+
+    # this allows using #{}# to insert a tables into SqlExpr without quotes
+    table_arg_regex = r"`'(.+?)'`"
+
+    return re.sub(table_arg_regex, r'\1', template.format(**args))
 
   def Implication(self, implication):
     when_then_clauses = []
@@ -386,11 +391,11 @@ class QL(object):
 
   def SubIfStruct(self, implication, subscript):
     """Optimizing SQL for subscript of an 'if' statement.
-    
+
     Args:
       implication: Implication syntax tree.
       subscript: Subscript string.
-      
+
     Returns:
       optimized SQL if all consequences are syntactic records, or None
       otherwise.
