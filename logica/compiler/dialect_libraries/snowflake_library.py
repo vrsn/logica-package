@@ -32,7 +32,9 @@ RExtract(s, p, g) = SqlExpr(
 ElementAt(array, index) = SqlExpr(
   "GET({array}, {index})", {array:, index:});
 
-ArrayGetVariant(array, index) = SqlExpr("{array}[{index}]", {array:, index:});
+ArrayGet(array, index) = SqlExpr("{array}[{index}]", {array:, index:});
+ArrayGetAsVarchar(array, index) = SqlExpr("{array}[{index}]", {array:, index:});
+
 
 ArrayJoin(array, delimiter) = SqlExpr(
   "ARRAY_TO_STRING({array}, {delimiter})",
