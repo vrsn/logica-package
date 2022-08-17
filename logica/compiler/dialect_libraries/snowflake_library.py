@@ -21,6 +21,10 @@ Array(a) = SqlExpr(
   "ARRAY_AGG({value}) WITHIN GROUP (order by {arg})",
   {arg: a.arg, value: a.value});
 
+ArrayContains(arr, item) = SqlExpr(
+  "ARRAY_CONTAINS({item}::variant, {arr})", 
+  {arr:, item:});
+
 RMatch(s, p) = SqlExpr(
   "REGEXP_LIKE({s}, {p})",
   {s: s, p: p});
