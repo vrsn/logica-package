@@ -36,6 +36,10 @@ Array(a) = SqlExpr(
   "ARRAY_AGG({value} order by {arg})",
   {arg: a.arg, value: a.value});
 
+ArrayContains(arr, item) = SqlExpr(
+  "CONTAINS({arr}, {item})", 
+  {arr:, item:});
+
 ArraySize(array) = SqlExpr(
   "CARDINALITY({array})", {array:});
 
