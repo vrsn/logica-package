@@ -330,6 +330,7 @@ class Snowflake(Dialect):
             'AnyValue': 'ANY_VALUE(%s)',
             'ArrayConcat': 'ARRAY_CAT({0}, {1})',
             'JsonExtractScalar': '{0}:{1}',
+            'JsonExtract': '{0}:{1}',
             'Length': 'ARRAY_SIZE(%s)'
         }
 
@@ -347,7 +348,7 @@ class Snowflake(Dialect):
         return snowflake_library.library
 
     def UnnestPhrase(self):
-        return 'LATERAL FLATTEN(INPUT => {0}) AS pushkin(seq,key,path,index,{1})'
+        return 'LATERAL FLATTEN(INPUT => {0}) AS pushkin_{1}(seq,key,path,index,{1})'
 
     def ArrayPhrase(self):
         return 'ARRAY_CONSTRUCT(%s)'
