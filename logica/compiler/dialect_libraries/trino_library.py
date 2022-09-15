@@ -32,22 +32,6 @@ ArgMinK(a, l) = SqlExpr(
   "SLICE(ARRAY_AGG({arg} order by {value}), 1, {lim})",
   {arg: a.arg, value: a.value, lim: l});
 
-Array(a) = SqlExpr(
-  "ARRAY_AGG({value} order by {arg})",
-  {arg: a.arg, value: a.value});
-
-ArraySize(array) = SqlExpr(
-  "CARDINALITY({array})", {array:});
-
-ArrayJoin(array, delimiter) = SqlExpr(
-  "ARRAY_JOIN({array}, {delimiter})", {array:, delimiter:});
-
-ElementAt(array, index) = SqlExpr(
-  "ELEMENT_AT({array}, {index})", {array:, index:});
-
-ArrayGet(array, index) = SqlExpr("json_array_get({array}, {index})", {array:, index:});
-ArrayGetAsVarchar(array, index) = SqlExpr("CAST(json_array_get({array}, {index}) AS VARCHAR)", {array:, index:});
-
 RMatch(s, p) = SqlExpr(
   "REGEXP_LIKE({s}, {p})",
   {s: s, p: p});
@@ -56,9 +40,43 @@ RExtract(s, p, g) = SqlExpr(
   "REGEXP_EXTRACT({s}, {p}, {g})",
   {s: s, p: p, g: g});
 
+Array(a) = SqlExpr(
+  "ARRAY_AGG({value} order by {arg})",
+  {arg: a.arg, value: a.value});
+
+ArraySize(array) = SqlExpr(
+  "CARDINALITY({array})", 
+  {array:});
+
+ArrayContains(array) = SqlExpr(
+  "CONTAINS({array})", {array:});
+
+Array_min(array) = SqlExpr(
+  "array_min({array})", 
+  {array:});
+
+ElementAt(array, index) = SqlExpr(
+  "ELEMENT_AT({array}, {index})", {array:, index:});
+
+ArrayGet(array, index) = SqlExpr(
+  "json_array_get({array}, {index})", 
+  {array:, index:});
+  
+ArrayGetAsVarchar(array, index) = SqlExpr(
+  "CAST(json_array_get({array}, {index}) AS VARCHAR)", 
+  {array:, index:});
+
+ArrayJoin(array, delimiter) = SqlExpr(
+  "ARRAY_JOIN({array}, {delimiter})", 
+  {array:, delimiter:});
+
 JsonArrayContains(json_value, value) = SqlExpr(
   "JSON_ARRAY_CONTAINS({json_value}, {value})", {json_value:, value:});
-  
+
+JsonArrayGet(arr, index) = SqlExpr(
+  "json_array_get({arr}, {index})", 
+  {arr:, index:});
+
 ToJsonArray(col) = SqlExpr(
   "CAST({col} AS ARRAY<JSON>)", {col:});
 
@@ -75,6 +93,10 @@ Now() = SqlExpr(
   "Now()", {});
 
 DaysDiff(start_date:, end_date:) = DateDiff("day", start_date, end_date);
+
+ParseStrTimestamp(str_timpestamp) = SqlExpr(
+  "from_iso8601_timestamp({str_timpestamp})", 
+  {str_timpestamp:});
 
 From_Unixtime(string) = SqlExpr(
   "FROM_ISO8601_TIMESTAMP_NANOS({string})", {string:});
