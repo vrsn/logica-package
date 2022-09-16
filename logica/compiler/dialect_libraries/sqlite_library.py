@@ -39,6 +39,10 @@ ArgMaxK(arr, k) =
 Array(arr) =
     SqlExpr("ArgMin({v}, {a}, null)", {a:, v:}) :- Arrow(a, v) == arr; 
 
+ArraySize(array) = SqlExpr(
+  "json_array_length({array})", 
+  {array:});
+
 ReadFile(filename) = SqlExpr("ReadFile({filename})", {filename:});
 
 ReadJson(filename) = ReadFile(filename);
