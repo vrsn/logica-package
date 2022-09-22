@@ -24,7 +24,7 @@ Array(a) = SqlExpr(
 RMatch(s, p) = SqlExpr(
   "REGEXP_LIKE({s}, {p})",
   {s: s, p: p});
-  
+
 RExtract(s, p, g) = SqlExpr(
   "REGEXP_SUBSTR({s}, {p}, {g})",
   {s: s, p: p, g: g});
@@ -35,24 +35,26 @@ ElementAt(array, index) = SqlExpr(
 ArrayGet(array, index) = SqlExpr("{array}[{index}]", {array:, index:});
 ArrayGetAsVarchar(array, index) = SqlExpr("{array}[{index}]", {array:, index:});
 
-
 ArrayJoin(array, delimiter) = SqlExpr(
   "ARRAY_TO_STRING({array}, {delimiter})",
-  {array:, delimiter:}); 
+  {array:, delimiter:});
 
 JsonParse(json) = SqlExpr(
-  "PARSE_JSON({json})", 
+  "PARSE_JSON({json})",
   {json:});
-  
+
 JsonArrayGet(arr, index) = SqlExpr(
-  "GET(PARSE_JSON({arr}), {index})", 
+  "GET(PARSE_JSON({arr}), {index})",
   {arr:, index:});
 
 JsonFormat(json) = SqlExpr(
-  "TO_JSON({json})", 
-  {json:}); 
+  "TO_JSON({json})",
+  {json:});
 
 ParseStrTimestamp(date_string) = SqlExpr(
   "TRY_TO_TIMESTAMP({date_string})",
   {date_string:});
+
+Now() = SqlExpr(
+  "CURRENT_TIMESTAMP", {});
 """
