@@ -57,4 +57,6 @@ ParseStrTimestamp(date_string) = SqlExpr(
 
 Now() = SqlExpr(
   "CURRENT_TIMESTAMP", {});
+
+JsonExtractAsString(json, path) = JsonExtractScalar(json, path);
 """

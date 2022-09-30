@@ -58,7 +58,7 @@ RExtract(s, p, g) = SqlExpr(
 
 JsonArrayContains(json_value, value) = SqlExpr(
   "JSON_ARRAY_CONTAINS({json_value}, {value})", {json_value:, value:});
-  
+
 ToJsonArray(col) = SqlExpr(
   "CAST({col} AS ARRAY<JSON>)", {col:});
 
@@ -78,4 +78,7 @@ DaysDiff(start_date:, end_date:) = DateDiff("day", start_date, end_date);
 
 From_Unixtime(string) = SqlExpr(
   "FROM_ISO8601_TIMESTAMP_NANOS({string})", {string:});
+
+JsonExtractAsString(json, path) = SqlExpr(
+  "json_format(json_extract({json}, {path}))", {json:, path:});
 """
