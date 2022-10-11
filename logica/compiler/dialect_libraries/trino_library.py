@@ -81,4 +81,8 @@ From_Unixtime(string) = SqlExpr(
 
 JsonExtractAsString(json, path) = SqlExpr(
   "json_format(json_extract({json}, {path}))", {json:, path:});
+
+ArrayContains(arr, x) = SqlExpr(
+  "CONTAINS({arr}, {x})",
+  {arr:, x:});
 """

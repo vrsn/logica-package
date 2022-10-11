@@ -59,4 +59,8 @@ Now() = SqlExpr(
   "CURRENT_TIMESTAMP", {});
 
 JsonExtractAsString(json, path) = JsonExtractScalar(json, path);
+
+ArrayContains(arr, x) = SqlExpr(
+  "ARRAY_CONTAINS({x}::variant, {arr})",
+  {arr:, x:});
 """
