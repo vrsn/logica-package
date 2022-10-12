@@ -328,6 +328,8 @@ class Snowflake(Dialect):
             'ToInt64': 'CAST(%s AS BIGINT)',
             'ToFloat64': 'CAST(%s AS DOUBLE)',
             'AnyValue': 'ANY_VALUE(%s)',
+            'Like': '({0}::VARCHAR LIKE {1})',
+            'Replace': 'REPLACE({0}::VARCHAR, {1}, {2})',
             'ArrayConcat': 'ARRAY_CAT({0}, {1})',
             'JsonExtract': '{1}',
             'JsonExtractScalar': '{1}',

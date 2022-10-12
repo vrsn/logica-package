@@ -48,8 +48,9 @@ ArraySize(array) = SqlExpr(
   "CARDINALITY({array})", 
   {array:});
 
-ArrayContains(array) = SqlExpr(
-  "CONTAINS({array})", {array:});
+ArrayContains(arr, x) = SqlExpr(
+  "CONTAINS({arr}, {x})",
+  {arr:, x:});
 
 Array_min(array) = SqlExpr(
   "array_min({array})", 
@@ -72,6 +73,9 @@ ArrayJoin(array, delimiter) = SqlExpr(
 
 JsonArrayContains(json_value, value) = SqlExpr(
   "JSON_ARRAY_CONTAINS({json_value}, {value})", {json_value:, value:});
+  
+JsonArrayLength(arr) = SqlExpr(
+  "JSON_ARRAY_LENGTH({arr})", {arr:});
 
 JsonArrayGet(arr, index) = SqlExpr(
   "json_array_get({arr}, {index})", 
@@ -92,8 +96,6 @@ GetField(obj, field) =  SqlExpr(
 Now() = SqlExpr(
   "Now()", {});
 
-DaysDiff(start_date:, end_date:) = DateDiff("day", start_date, end_date);
-
 ParseStrTimestamp(str_timpestamp) = SqlExpr(
   "from_iso8601_timestamp({str_timpestamp})", 
   {str_timpestamp:});
@@ -103,9 +105,4 @@ From_Unixtime(string) = SqlExpr(
 
 JsonExtractAsString(json, path) = SqlExpr(
   "json_format(json_extract({json}, {path}))", {json:, path:});
-
-ArrayContains(arr, x) = SqlExpr(
-  "CONTAINS({arr}, {x})",
-  {arr:, x:});
-
 """

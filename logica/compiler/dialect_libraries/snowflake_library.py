@@ -20,7 +20,7 @@ ArgMinK(a, l) = SqlExpr(
 RMatch(s, p) = SqlExpr(
   "REGEXP_LIKE({s}, {p})",
   {s: s, p: p});
-  
+
 RExtract(s, p, g) = SqlExpr(
   "REGEXP_SUBSTR({s}, {p}, {g})",
   {s: s, p: p, g: g});
@@ -32,11 +32,11 @@ Array(a) = SqlExpr(
 ArraySize(array) = SqlExpr(
   "ARRAY_SIZE({array})", {array:});
 
-ArrayContains(array) = SqlExpr(
-  "ARRAY_CONTAINS({array})", {array:});
+ArrayContains(array, element) = SqlExpr(
+  "ARRAY_CONTAINS({array}, {element})", {array:, element:});
 
 Array_min(array) = SqlExpr(
-  "SELECT min(pushkin.value) FROM LATERAL FLATTEN(INPUT => {array}}) pushkin", 
+  "SELECT min(pushkin.value) FROM LATERAL FLATTEN(INPUT => {array}) pushkin", 
   {array:});
 
 ElementAt(array, index) = SqlExpr(
@@ -45,7 +45,7 @@ ElementAt(array, index) = SqlExpr(
 ArrayGet(array, index) = SqlExpr(
   "{array}[{index}]", 
   {array:, index:});
-  
+
 ArrayGetAsVarchar(array, index) = SqlExpr(
   "{array}[{index}]", 
   {array:, index:});
@@ -55,9 +55,12 @@ ArrayJoin(array, delimiter) = SqlExpr(
   {array:, delimiter:}); 
 
 JsonArrayContains(arr, item) = SqlExpr(
-  "ARRAY_CONTAINS({item}::variant, PARSE_JSON({arr}))", 
+  "ARRAY_CONTAINS({item}::variant, PARSE_JSON({arr}::varchar))", 
   {arr:, item:});
-  
+
+JsonArrayLength(arr) = SqlExpr(
+  "ARRAY_SIZE({arr})", {arr:});
+
 JsonArrayGet(arr, index) = SqlExpr(
   "GET(PARSE_JSON({arr}), {index})", 
   {arr:, index:});
@@ -76,19 +79,17 @@ ToJson(col) = SqlExpr(
 JsonParse(json) = SqlExpr(
   "PARSE_JSON({json})", 
   {json:});
-  
+
 GetField(obj, field) =  SqlExpr(
   "JSON_EXTRACT_PATH_TEXT({obj}, {field})", {obj:, field:});
-  
+
 Now() = SqlExpr(
   "CURRENT_TIMESTAMP()", {});
-  
-DaysDiff(start_date:, end_date:) = DateDiff("day", start_date, end_date);
 
 ParseStrTimestamp(date_string) = SqlExpr(
-  "TRY_TO_TIMESTAMP({date_string})",
+  "TRY_TO_TIMESTAMP({date_string}::VARCHAR)",
   {date_string:});
-  
+
 From_Unixtime(string) = SqlExpr(
   "TO_TIMESTAMP_TZ({string})", {string:});
 """
