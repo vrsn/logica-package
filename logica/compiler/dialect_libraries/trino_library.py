@@ -61,7 +61,7 @@ ElementAt(array, index) = SqlExpr(
 ArrayGet(array, index) = SqlExpr(
   "json_array_get({array}, {index})", 
   {array:, index:});
-  
+
 ArrayGetAsVarchar(array, index) = SqlExpr(
   "CAST(json_array_get({array}, {index}) AS VARCHAR)", 
   {array:, index:});
@@ -100,4 +100,12 @@ ParseStrTimestamp(str_timpestamp) = SqlExpr(
 
 From_Unixtime(string) = SqlExpr(
   "FROM_ISO8601_TIMESTAMP_NANOS({string})", {string:});
+
+JsonExtractAsString(json, path) = SqlExpr(
+  "json_format(json_extract({json}, {path}))", {json:, path:});
+
+ArrayContains(arr, x) = SqlExpr(
+  "CONTAINS({arr}, {x})",
+  {arr:, x:});
+
 """

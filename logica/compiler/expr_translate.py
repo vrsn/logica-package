@@ -341,7 +341,7 @@ class QL(object):
         record['field_value'][1]['value']['expression']['record'])
 
     # this allows using #{}# to insert a tables into SqlExpr without quotes
-    table_arg_regex = r"#'(.+?)'#"
+    table_arg_regex = r"#'(.*?)'#"
 
     return re.sub(table_arg_regex, r'\1', template.format(**args))
 
