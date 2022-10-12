@@ -329,8 +329,8 @@ class Snowflake(Dialect):
             'ToFloat64': 'CAST(%s AS DOUBLE)',
             'AnyValue': 'ANY_VALUE(%s)',
             'ArrayConcat': 'ARRAY_CAT({0}, {1})',
-            'JsonExtractScalar': '{0}:{1}',
-            'JsonExtract': '{0}:{1}',
+            'JsonExtractScalar': '{1}',
+            'JsonExtract': '{1}',
             'Length': 'ARRAY_SIZE(%s)'
         }
 

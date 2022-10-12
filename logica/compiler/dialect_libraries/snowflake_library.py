@@ -90,5 +90,5 @@ ParseStrTimestamp(date_string) = SqlExpr(
   {date_string:});
   
 From_Unixtime(string) = SqlExpr(
-  "TO_TIMESTAMP_TZ ({string})", {string:});
+  "TO_TIMESTAMP_TZ({string})", {string:});
 """
