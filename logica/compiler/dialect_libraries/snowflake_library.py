@@ -40,7 +40,7 @@ Array_min(array) = SqlExpr(
   {array:});
 
 ElementAt(array, index) = SqlExpr(
-  "GET({array}, {index})", {array:, index:});
+  "GET({array}, {index}-1)", {array:, index:});
 
 ArrayGet(array, index) = SqlExpr(
   "{array}[{index}]", 
@@ -87,9 +87,15 @@ Now() = SqlExpr(
   "CURRENT_TIMESTAMP()", {});
 
 ParseStrTimestamp(date_string) = SqlExpr(
-  "TRY_TO_TIMESTAMP({date_string}::VARCHAR)",
+  "TO_TIMESTAMP_TZ({date_string}::VARCHAR)",
   {date_string:});
 
-From_Unixtime(string) = SqlExpr(
+From_ISO8601_TIMESTAMP_NANOS(string) = SqlExpr(
   "TO_TIMESTAMP_TZ({string})", {string:});
+
+From_Unixtime(int) = SqlExpr(
+  "TO_TIMESTAMP_LTZ({int})", {int:});
+
+JsonExtractAsString(json, path) = SqlExpr(
+  "TO_JSON({json}:{path})", {json:, path:});
 """

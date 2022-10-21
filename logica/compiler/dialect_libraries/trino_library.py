@@ -73,7 +73,7 @@ ArrayJoin(array, delimiter) = SqlExpr(
 
 JsonArrayContains(json_value, value) = SqlExpr(
   "JSON_ARRAY_CONTAINS({json_value}, {value})", {json_value:, value:});
-  
+
 JsonArrayLength(arr) = SqlExpr(
   "JSON_ARRAY_LENGTH({arr})", {arr:});
 
@@ -100,8 +100,11 @@ ParseStrTimestamp(str_timpestamp) = SqlExpr(
   "from_iso8601_timestamp({str_timpestamp})", 
   {str_timpestamp:});
 
-From_Unixtime(string) = SqlExpr(
+From_ISO8601_TIMESTAMP_NANOS(string) = SqlExpr(
   "FROM_ISO8601_TIMESTAMP_NANOS({string})", {string:});
+
+From_Unixtime(int) = SqlExpr(
+  "FROM_UNIXTIME({int})", {int:});
 
 JsonExtractAsString(json, path) = SqlExpr(
   "json_format(json_extract({json}, {path}))", {json:, path:});
