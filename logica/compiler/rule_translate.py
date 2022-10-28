@@ -391,6 +391,13 @@ class RuleStructure(object):
                            dialect=subquery_encoder.execution.dialect)
     r = 'SELECT\n'
     fields = []
+    if subquery_encoder.execution.dialect.Name() == "Snowflake":
+        self.select = collections.OrderedDict(
+            (f'"{key}"', val)
+            if not (key.startswith('"') and key.endswith('"'))
+            else (key, val)
+            for key, val in self.select.items()
+        )
     if not self.select:
       raise RuleCompileException(
           color.Format(
