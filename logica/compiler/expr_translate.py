@@ -462,11 +462,6 @@ class QL(object):
           arguments[1] = re.sub("^\$\.?", "", arguments[1])
 
 
-      if call['predicate_name'] == "Like" and self.dialect.Name() in ["Snowflake"]:
-          like_function = self.dialect.BuiltInFunctions()["Like"]
-          return self.Function(like_function, arguments)
-      if call['predicate_name'] == "Replace" and self.dialect.Name() in ["Snowflake"]:
-          replace_function = self.dialect.BuiltInFunctions()["Replace"]
       if call['predicate_name'] in self.ANALYTIC_FUNCTIONS:
         return self.ConvertAnalytic(call)
       if call['predicate_name'] == 'SqlExpr':
