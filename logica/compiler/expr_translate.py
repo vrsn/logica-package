@@ -459,7 +459,7 @@ class QL(object):
           "Dremio",
       ]:
           arguments[1] = arguments[1].strip("'").replace(".", ":").replace('$', arguments[0])
-          # to handle JsonExtract(json, """[some-key]""")
+          # to handle JsonExtract(json, """$["some-key"]""")
           if re.search("\[[^\d]*\]", arguments[1]):
               arguments[1] = arguments[1].replace('[', ':').replace(']', '')
 
