@@ -459,7 +459,8 @@ class QL(object):
           "Dremio",
       ]:
           # remove dollar sign and "$." from second argument
-          arguments[1] = arguments[1].replace("$", "").replace(".", "", 1)
+          arguments[1] = re.sub("\$\.|\$", "", arguments[1])
+
 
       if call['predicate_name'] == "Like" and self.dialect.Name() in ["Snowflake"]:
           like_function = self.dialect.BuiltInFunctions()["Like"]
