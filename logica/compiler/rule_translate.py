@@ -391,13 +391,6 @@ class RuleStructure(object):
                            dialect=subquery_encoder.execution.dialect)
     r = 'SELECT\n'
     fields = []
-    if subquery_encoder.execution.dialect.Name() == "Snowflake":
-        self.select = collections.OrderedDict(
-            (f'"{key}"', val)
-            if not (key.startswith('"') and key.endswith('"'))
-            else (key, val)
-            for key, val in self.select.items()
-        )
     if not self.select:
       raise RuleCompileException(
           color.Format(
@@ -409,7 +402,20 @@ class RuleStructure(object):
       if k == '*':
         fields.append('%s.*' % ql.ConvertToSql(v))
       else:
-        fields.append('%s AS %s' % (ql.ConvertToSql(v), LogicaFieldToSqlField(k)))
+
+        # add double quotes to all attributes in main_predicate
+        current_predicate = self.this_predicate_name
+        main_predicate = subquery_encoder.execution.main_predicate
+        if subquery_encoder.execution.dialect.Name() == "Snowflake" and current_predicate == main_predicate:
+            logica_field_to_sql_field = (
+                f'"{LogicaFieldToSqlField(k)}"'
+                if not (k.startswith('"') and k.endswith('"'))
+                else LogicaFieldToSqlField(k)
+            )
+        else:
+            logica_field_to_sql_field = LogicaFieldToSqlField(k)
+
+        fields.append('%s AS %s' % (ql.ConvertToSql(v), logica_field_to_sql_field))
     r += ',\n'.join('  ' + f for f in fields)
     if (self.tables or self.unnestings or
         self.constraints or self.distinct_denoted):
