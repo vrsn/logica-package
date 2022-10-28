@@ -453,13 +453,15 @@ class QL(object):
     if 'call' in expression:
       call = expression['call']
       arguments = self.ConvertRecord(call['record'])
-      if call['predicate_name'] == "JsonExtractScalar" and self.dialect.Name(
+      if (call['predicate_name'] == "JsonExtractScalar" or call['predicate_name'] == "JsonExtract")  and self.dialect.Name(
       ) in [
           "Snowflake",
           "Dremio",
       ]:
-        #delete dollar sign and quotes from argument
-        arguments[1] = arguments[1].strip("'").replace("$.", '')
+          # remove dollar sign and "$." from second argument
+          arguments[1] = re.sub("^\$\.?", "", arguments[1])
+
+
       if call['predicate_name'] in self.ANALYTIC_FUNCTIONS:
         return self.ConvertAnalytic(call)
       if call['predicate_name'] == 'SqlExpr':

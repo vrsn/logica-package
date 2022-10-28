@@ -328,8 +328,11 @@ class Snowflake(Dialect):
             'ToInt64': 'CAST(%s AS BIGINT)',
             'ToFloat64': 'CAST(%s AS DOUBLE)',
             'AnyValue': 'ANY_VALUE(%s)',
+            'Like': '({0}::VARCHAR LIKE {1})',
+            'Replace': 'REPLACE({0}::VARCHAR, {1}, {2})',
             'ArrayConcat': 'ARRAY_CAT({0}, {1})',
-            'JsonExtractScalar': '{0}:"{1}"',
+            'JsonExtract': 'GET_PATH({0}, {1})',
+            'JsonExtractScalar': 'GET_PATH({0}, {1})',
             'Length': 'ARRAY_SIZE(%s)',
             'DateDiff': 'DATEDIFF({0}, {1}, {2})'
         }
@@ -348,7 +351,7 @@ class Snowflake(Dialect):
         return snowflake_library.library
 
     def UnnestPhrase(self):
-        return 'LATERAL FLATTEN(INPUT => {0}) AS pushkin(seq,key,path,index,{1})'
+        return 'LATERAL FLATTEN(INPUT => {0}) AS pushkin_{1}(seq,key,path,index,{1})'
 
     def ArrayPhrase(self):
         return 'ARRAY_CONSTRUCT(%s)'

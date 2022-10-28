@@ -17,10 +17,6 @@ ArgMinK(a, l) = SqlExpr(
   "ARRAY_SLICE(ARRAY_AGG({arg}) WITHIN GROUP (order by {value}), 1, {lim})",
   {arg: a.arg, value: a.value, lim: l});
 
-Array(a) = SqlExpr(
-  "ARRAY_AGG({value}) WITHIN GROUP (order by {arg})",
-  {arg: a.arg, value: a.value});
-
 RMatch(s, p) = SqlExpr(
   "REGEXP_LIKE({s}, {p})",
   {s: s, p: p});
@@ -29,19 +25,41 @@ RExtract(s, p, g) = SqlExpr(
   "REGEXP_SUBSTR({s}, {p}, {g})",
   {s: s, p: p, g: g});
 
-ElementAt(array, index) = SqlExpr(
-  "GET({array}, {index})", {array:, index:});
+Array(a) = SqlExpr(
+  "ARRAY_AGG({value}) WITHIN GROUP (order by {arg})",
+  {arg: a.arg, value: a.value});
 
-ArrayGet(array, index) = SqlExpr("{array}[{index}]", {array:, index:});
-ArrayGetAsVarchar(array, index) = SqlExpr("{array}[{index}]", {array:, index:});
+ArraySize(array) = SqlExpr(
+  "ARRAY_SIZE({array})", {array:});
+
+ArrayContains(array, element) = SqlExpr(
+  "ARRAY_CONTAINS({array}, {element})", {array:, element:});
+
+Array_min(array) = SqlExpr(
+  "SELECT min(pushkin.value) FROM LATERAL FLATTEN(INPUT => {array}) pushkin",
+  {array:});
+
+ElementAt(array, index) = SqlExpr(
+  "GET({array}, {index}-1)", {array:, index:});
+
+ArrayGet(array, index) = SqlExpr(
+  "{array}[{index}]",
+  {array:, index:});
+
+ArrayGetAsVarchar(array, index) = SqlExpr(
+  "{array}[{index}]",
+  {array:, index:});
 
 ArrayJoin(array, delimiter) = SqlExpr(
   "ARRAY_TO_STRING({array}, {delimiter})",
   {array:, delimiter:});
 
-JsonParse(json) = SqlExpr(
-  "PARSE_JSON({json})",
-  {json:});
+JsonArrayContains(arr, item) = SqlExpr(
+  "ARRAY_CONTAINS({item}::variant, PARSE_JSON({arr}::varchar))",
+  {arr:, item:});
+
+JsonArrayLength(arr) = SqlExpr(
+  "ARRAY_SIZE({arr})", {arr:});
 
 JsonArrayGet(arr, index) = SqlExpr(
   "GET(PARSE_JSON({arr}), {index})",
@@ -51,16 +69,33 @@ JsonFormat(json) = SqlExpr(
   "TO_JSON({json})",
   {json:});
 
-ParseStrTimestamp(date_string) = SqlExpr(
-  "TRY_TO_TIMESTAMP({date_string})",
-  {date_string:});
+ToJsonArray(col) = SqlExpr(
+  "{col}::VARIANT", {col:});
+
+ToJson(col) = SqlExpr(
+  "TO_JSON({col})",
+  {col:});
+
+JsonParse(json) = SqlExpr(
+  "PARSE_JSON({json})",
+  {json:});
+
+GetField(obj, field) =  SqlExpr(
+  "JSON_EXTRACT_PATH_TEXT({obj}, {field})", {obj:, field:});
 
 Now() = SqlExpr(
-  "CURRENT_TIMESTAMP", {});
+  "CURRENT_TIMESTAMP()", {});
 
-JsonExtractAsString(json, path) = JsonExtractScalar(json, path);
+ParseStrTimestamp(date_string) = SqlExpr(
+  "TO_TIMESTAMP_TZ({date_string}::VARCHAR)",
+  {date_string:});
 
-ArrayContains(arr, x) = SqlExpr(
-  "ARRAY_CONTAINS({x}::variant, {arr})",
-  {arr:, x:});
+From_ISO8601_TIMESTAMP_NANOS(string) = SqlExpr(
+  "TO_TIMESTAMP_TZ({string})", {string:});
+
+From_Unixtime(int) = SqlExpr(
+  "TO_TIMESTAMP_LTZ({int})", {int:});
+
+JsonExtractAsString(json, path) = SqlExpr(
+  "JSON_EXTRACT_PATH_TEXT({obj}, {field})", {obj:, field:});
 """

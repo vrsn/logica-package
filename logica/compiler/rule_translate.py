@@ -47,10 +47,14 @@ class RuleCompileException(Exception):
     print(color.Format('\n[ {error}Error{end} ] ') + str(self), file=stream)
 
 
-def LogicaFieldToSqlField(logica_field):
+def LogicaFieldToSqlField(logica_field, wrap_in_quotes = False):
   if isinstance(logica_field, int):
     # TODO: Ensure that no collision occurs.
     return 'col%d' % logica_field
+
+  if wrap_in_quotes and not logica_field.startswith('"'):
+    return f'"{logica_field}"'
+
   return logica_field
 
 
@@ -402,7 +406,11 @@ class RuleStructure(object):
       if k == '*':
         fields.append('%s.*' % ql.ConvertToSql(v))
       else:
-        fields.append('%s AS %s' % (ql.ConvertToSql(v), LogicaFieldToSqlField(k)))
+        # add double quotes to all attributes in main_predicate
+        current_predicate = self.this_predicate_name
+        main_predicate = subquery_encoder.execution.main_predicate
+        wrap_in_quotes = (subquery_encoder.execution.dialect.Name() == "Snowflake" and current_predicate == main_predicate)
+        fields.append('%s AS %s' % (ql.ConvertToSql(v), LogicaFieldToSqlField(k, wrap_in_quotes)))
     r += ',\n'.join('  ' + f for f in fields)
     if (self.tables or self.unnestings or
         self.constraints or self.distinct_denoted):
