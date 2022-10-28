@@ -458,10 +458,8 @@ class QL(object):
           "Snowflake",
           "Dremio",
       ]:
-          arguments[1] = arguments[1].strip("'").replace(".", ":").replace('$', arguments[0])
-          # to handle JsonExtract(json, """$["some-key"]""")
-          if re.search("\[[^\d]*\]", arguments[1]):
-              arguments[1] = arguments[1].replace('[', ':').replace(']', '')
+          # remove dollar sign and "$." from second argument
+          arguments[1] = arguments[1].replace("$", "").replace(".", "", 1)
 
       if call['predicate_name'] == "Like" and self.dialect.Name() in ["Snowflake"]:
           like_function = self.dialect.BuiltInFunctions()["Like"]

@@ -331,8 +331,8 @@ class Snowflake(Dialect):
             'Like': '({0}::VARCHAR LIKE {1})',
             'Replace': 'REPLACE({0}::VARCHAR, {1}, {2})',
             'ArrayConcat': 'ARRAY_CAT({0}, {1})',
-            'JsonExtract': '{1}',
-            'JsonExtractScalar': '{1}',
+            'JsonExtract': 'GET_PATH({0}, {1})',
+            'JsonExtractScalar': 'GET_PATH({0}, {1})',
             'Length': 'ARRAY_SIZE(%s)',
             'DateDiff': 'DATEDIFF({0}, {1}, {2})'
         }
