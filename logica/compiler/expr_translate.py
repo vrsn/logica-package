@@ -459,7 +459,7 @@ class QL(object):
           "Dremio",
       ]:
           # remove dollar sign and "$." from second argument
-          arguments[1] = re.sub("^\$\.?", "", arguments[1])
+          arguments[1] = re.sub("^(['\"]*)\$\.?", r'\1', arguments[1])
 
 
       if call['predicate_name'] in self.ANALYTIC_FUNCTIONS:
