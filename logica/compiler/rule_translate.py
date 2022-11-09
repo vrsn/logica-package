@@ -478,7 +478,7 @@ def ExtractPredicateStructure(c, s):
   predicate = c['predicate_name']
 
   if predicate in (
-      '<=', '<', '>', '>=', '!=', '&&', '||', '!', 'IsNull', 'Like',
+      '<=', '<', '>', '>=', '!=', '&&', '||', '!', 'IsNull', 'ILike', 'Like',
       'Constraint'):
     s.constraints.append({'call': c})
     return
