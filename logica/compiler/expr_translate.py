@@ -61,6 +61,8 @@ class QL(object):
                     'ROW_NUMBER() OVER () AS n, x AS element) '
                     'FROM UNNEST(%s) as x)'),
       'IsNull': '(%s IS NULL)',
+      # ILike is case insensitive alternative of Like
+      'ILike': '(lower({0}) LIKE lower({1}))',
       'Join': 'ARRAY_TO_STRING(%s)',
       'Like': '({0} LIKE {1})',
       'Range': 'GENERATE_ARRAY(0, %s - 1)',
@@ -206,7 +208,7 @@ class QL(object):
     if f in self.BUILT_IN_FUNCTIONS:
       if f == 'If':
         return (3, 3)
-      arity_2_functions = ['RegexpExtract', 'Like',
+      arity_2_functions = ['RegexpExtract', 'Like', 'ILike',
                            'ParseTimestamp', 'FormatTimestamp',
                            'TimestampAddDays', 'Split', 'Element',
                            'Concat', 'DateAddDay', 'DateDiffDay',
