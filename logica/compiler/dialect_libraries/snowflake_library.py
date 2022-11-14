@@ -97,5 +97,5 @@ From_Unixtime(int) = SqlExpr(
   "TO_TIMESTAMP_LTZ({int})", {int:});
 
 JsonExtractAsString(json, path) = SqlExpr(
-  "JSON_EXTRACT_PATH_TEXT({obj}, {field})", {obj:, field:});
+  "JSON_EXTRACT_PATH_TEXT({json}, {path})", {json:, path:});
 """
