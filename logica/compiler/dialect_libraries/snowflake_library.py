@@ -100,5 +100,5 @@ JsonExtractAsString(json, path) = SqlExpr(
   "JSON_EXTRACT_PATH_TEXT({json}, {path})", {json:, path:});
 
 IsNull(expr) = SqlExpr(
-  "IS_NULL_VALUE(json_extract({expr}))", {expr:});
+  "IS_NULL_VALUE({expr})", {expr:});
 """
