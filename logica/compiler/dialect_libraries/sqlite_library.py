@@ -58,6 +58,9 @@ ElementAt(array, index) = SqlExpr(
 JsonArrayContains(json_value, value) =
   SqlExpr("CASE WHEN {json_value} = 'null' OR {json_value} IS NULL THEN NULL ELSE CASE WHEN EXISTS (SELECT 1 FROM json_each({json_value}) WHERE json_each.value LIKE {value}) THEN TRUE ELSE FALSE END END", {json_value:, value:});
 
+JsonArrayLength(arr) = SqlExpr(
+  "JSON_ARRAY_LENGTH({arr})", {arr:});
+
 ToJsonArray(col) = SqlExpr("{col}", {col:});
 
 ToJson(col) = SqlExpr("{col}", {col:});
