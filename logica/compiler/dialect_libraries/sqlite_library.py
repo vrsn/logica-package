@@ -65,5 +65,9 @@ ToJsonArray(col) = SqlExpr("{col}", {col:});
 
 ToJson(col) = SqlExpr("{col}", {col:});
 
+JsonParse(col) = SqlExpr(
+  "JSON({col})", 
+  {col:});
+
 GetField(obj, field) =  (SqlExpr("JSON_EXTRACT({obj}, {field})", {obj:, field:}));
 """
