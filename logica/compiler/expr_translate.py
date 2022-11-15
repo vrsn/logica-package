@@ -455,7 +455,7 @@ class QL(object):
     if 'call' in expression:
       call = expression['call']
       arguments = self.ConvertRecord(call['record'])
-      if call['predicate_name'] in ["JsonExtractScalar", "JsonExtract", "GetField", "JsonExtractAsString"] and self.dialect.Name(
+      if call['predicate_name'] in ["JsonExtractScalar", "JsonExtract"] and self.dialect.Name(
       ) in [
           "Snowflake",
           "Dremio",

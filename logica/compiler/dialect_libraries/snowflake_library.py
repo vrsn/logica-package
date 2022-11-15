@@ -80,9 +80,6 @@ JsonParse(json) = SqlExpr(
   "PARSE_JSON({json})",
   {json:});
 
-GetField(obj, field) =  SqlExpr(
-  "JSON_EXTRACT_PATH_TEXT({obj}, {field})", {obj:, field:});
-
 Now() = SqlExpr(
   "CURRENT_TIMESTAMP()", {});
 
@@ -96,6 +93,10 @@ From_ISO8601_TIMESTAMP_NANOS(string) = SqlExpr(
 From_Unixtime(int) = SqlExpr(
   "TO_TIMESTAMP_LTZ({int})", {int:});
 
-JsonExtractAsString(json, path) = SqlExpr(
-  "JSON_EXTRACT_PATH_TEXT({json}, {path})", {json:, path:});
+ToVarchar(val) = SqlExpr(
+  "TO_VARCHAR({val})", {val:});
+
+GetField(obj, field) =  JsonExtractAsString(obj, field);
+
+JsonExtractAsString(json, path) = ToVarchar(JsonExtractScalar(json, path));
 """
