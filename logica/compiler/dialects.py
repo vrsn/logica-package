@@ -336,7 +336,7 @@ class Snowflake(Dialect):
             'JsonExtractScalar': 'GET_PATH({0}, {1})',
             'Length': 'ARRAY_SIZE(%s)',
             'DateDiff': 'DATEDIFF({0}, {1}, {2})',
-            'IsNull': '({0} IS NULL OR IS_NULL_VALUE({0}))'
+            'IsNull': '({0} IS NULL OR IS_NULL_VALUE(PARSE_JSON({0})))'
         }
 
     def InfixOperators(self):
