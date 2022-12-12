@@ -22,7 +22,7 @@ RMatch(s, p) = SqlExpr(
   {s: s, p: p});
 
 RExtract(s, p, g) = SqlExpr(
-  "REGEXP_SUBSTR({s}, {p}, {g})",
+  "REGEXP_SUBSTR({s}, {p}, 1, 1, 'c', {g})",
   {s: s, p: p, g: g});
 
 Array(a) = SqlExpr(
