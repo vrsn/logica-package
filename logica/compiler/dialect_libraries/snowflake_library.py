@@ -24,6 +24,10 @@ RMatch(s, p) = SqlExpr(
 RExtract(s, p, g) = SqlExpr(
   "REGEXP_SUBSTR({s}, {p}, 1, 1, 'c', {g})",
   {s: s, p: p, g: g});
+  
+RExtractSubstring(string, pattern, position, occurrence, parameters, group) = SqlExpr(
+  "REGEXP_SUBSTR({s}, {p}, {pos}, {o}, {params}, {g})",
+  {s: string, p: pattern, pos: position, o: occurrence, params: parameters, g: group});
 
 Array(a) = SqlExpr(
   "ARRAY_AGG({value}) WITHIN GROUP (order by {arg})",
