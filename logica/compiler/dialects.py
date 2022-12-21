@@ -342,6 +342,7 @@ class Snowflake(Dialect):
     def InfixOperators(self):
         return {
             '++': 'CONCAT(%s, %s)',
+            'in': 'ARRAY_CONTAINS(%s::variant, %s)'
         }
 
     def Subscript(self, record, subscript):
