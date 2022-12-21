@@ -24,7 +24,7 @@ RMatch(s, p) = SqlExpr(
 RExtract(s, p, g) = SqlExpr(
   "REGEXP_SUBSTR({s}, {p}, 1, 1, 'c', {g})",
   {s: s, p: p, g: g});
-  
+
 RExtractSubstring(string, pattern, position, occurrence, parameters, group) = SqlExpr(
   "REGEXP_SUBSTR({s}, {p}, {pos}, {o}, {params}, {g})",
   {s: string, p: pattern, pos: position, o: occurrence, params: parameters, g: group});
@@ -37,7 +37,7 @@ ArraySize(array) = SqlExpr(
   "ARRAY_SIZE({array})", {array:});
 
 ArrayContains(array, element) = SqlExpr(
-  "ARRAY_CONTAINS({array}, {element})", {array:, element:});
+  "ARRAY_CONTAINS({element}, {array})", {array:, element:});
 
 Array_min(array) = SqlExpr(
   "SELECT min(pushkin.value) FROM LATERAL FLATTEN(INPUT => {array}) pushkin",
