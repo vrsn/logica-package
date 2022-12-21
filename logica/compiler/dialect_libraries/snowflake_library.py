@@ -37,7 +37,7 @@ ArraySize(array) = SqlExpr(
   "ARRAY_SIZE({array})", {array:});
 
 ArrayContains(array, element) = SqlExpr(
-  "ARRAY_CONTAINS({element}, {array})", {array:, element:});
+  "ARRAY_CONTAINS({element}::variant, {array})", {array:, element:});
 
 Array_min(array) = SqlExpr(
   "SELECT min(pushkin.value) FROM LATERAL FLATTEN(INPUT => {array}) pushkin",
