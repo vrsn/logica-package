@@ -251,7 +251,9 @@ class Trino(Dialect):
         'ToFloat64': 'CAST(%s AS DOUBLE)',
         'AnyValue': 'ARBITRARY(%s)',
         'ArrayConcat': '{0} || {1}',
-        'Count': 'APPROX_DISTINCT(%s)'
+        'Count': 'APPROX_DISTINCT(%s)',
+        'LogicalOr': 'BOOL_OR(%s)',
+        'LogicalAnd': 'BOOL_AND(%s)'
     }
 
   def InfixOperators(self):
@@ -336,7 +338,9 @@ class Snowflake(Dialect):
             'JsonExtractScalar': 'GET_PATH({0}, {1})',
             'Length': 'ARRAY_SIZE(%s)',
             'DateDiff': 'DATEDIFF({0}, {1}, {2})',
-            'IsNull': '({0} IS NULL OR IS_NULL_VALUE({0}::variant) OR (IS_ARRAY({0}::variant) and ARRAY_SIZE({0}::variant)=0))'
+            'IsNull': '({0} IS NULL OR IS_NULL_VALUE({0}::variant) OR (IS_ARRAY({0}::variant) and ARRAY_SIZE({0}::variant)=0))',
+            'LogicalOr': 'BOOLOR_AGG(%s)',
+            'LogicalAnd': 'BOOLAND_AGG(%s)'
         }
 
     def InfixOperators(self):
