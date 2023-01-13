@@ -463,14 +463,13 @@ class QL(object):
           # remove dollar sign and "$." from second argument and wrap identifiers in double quotes if necessary
           arguments[1] = re.sub("^(['\"]*)\$\.?", r"\1", arguments[1])
 
-          identifier_allowed_characters = re.compile("^[A-Za-z0-9_$\[\]]*$")
+          identifier_allowed_characters = re.compile("^\[.*\]|^[\w\[\]$]*$")
           splitted_arguments = arguments[1].strip("'").split(".")
 
           with_additional_quotes = list(
               map(
                   lambda identifier: f'"{identifier}"'
-                  if not identifier_allowed_characters.match(identifier) and
-                     not (identifier.startswith('[') and identifier.endswith(']'))
+                  if not identifier_allowed_characters.match(identifier)
                   else   identifier,
                   splitted_arguments
               )
