@@ -30,7 +30,7 @@ RExtractSubstring(string, pattern, position, occurrence, parameters, group) = Sq
   {s: string, p: pattern, pos: position, o: occurrence, params: parameters, g: group});
 
 Array(a) = SqlExpr(
-  "ARRAY_AGG({value}) WITHIN GROUP (order by {arg})",
+  "ARRAY_AGG({value}) WITHIN GROUP (order by {arg} ASC)",
   {arg: a.arg, value: a.value});
 
 ArraySize(array) = SqlExpr(
@@ -38,10 +38,6 @@ ArraySize(array) = SqlExpr(
 
 ArrayContains(array, element) = SqlExpr(
   "ARRAY_CONTAINS({element}::variant, {array})", {array:, element:});
-
-Array_min(array) = SqlExpr(
-  "SELECT min(pushkin.value) FROM LATERAL FLATTEN(INPUT => {array}) pushkin",
-  {array:});
 
 ElementAt(array, index) = SqlExpr(
   "GET({array}, {index}-1)", {array:, index:});
