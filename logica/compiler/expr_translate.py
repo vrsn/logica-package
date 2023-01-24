@@ -468,7 +468,7 @@ class QL(object):
 
           with_additional_quotes = map(
                   lambda identifier: f'"{identifier}"'
-                  if not identifier_allowed_characters.match(identifier)
+                  if not identifier_allowed_characters.match(identifier) and '"' not in identifier
                   else   identifier,
                   splitted_arguments
           )
