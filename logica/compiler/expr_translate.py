@@ -460,9 +460,21 @@ class QL(object):
           "Snowflake",
           "Dremio",
       ]:
-          # remove dollar sign and "$." from second argument
-          arguments[1] = re.sub("^(['\"]*)\$\.?", r'\1', arguments[1])
+          # remove dollar sign and "$." from second argument and wrap identifiers in double quotes if necessary
+          arguments[1] = re.sub("^(['\"]*)\$\.?", r"\1", arguments[1])
 
+          identifier_allowed_characters = re.compile("^\[.*\]$|^[\w\[\]$]*$")
+          splitted_arguments = arguments[1].strip("'").split(".")
+
+          with_additional_quotes = map(
+                  lambda identifier: f'"{identifier}"'
+                  if not identifier_allowed_characters.match(identifier) and '"' not in identifier
+                  else   identifier,
+                  splitted_arguments
+          )
+
+          joined_path = '.'.join(with_additional_quotes)
+          arguments[1] = f"'{joined_path}'"
 
       if call['predicate_name'] in self.ANALYTIC_FUNCTIONS:
         return self.ConvertAnalytic(call)
