@@ -26,6 +26,7 @@ if '.' not in __package__:
   from compiler.dialect_libraries import presto_library
   from compiler.dialect_libraries import snowflake_library
   from compiler.dialect_libraries import dremio_library
+  from compiler.dialect_libraries import databricks_library
 else:
   from ..compiler.dialect_libraries import bq_library
   from ..compiler.dialect_libraries import psql_library
@@ -34,6 +35,7 @@ else:
   from ..compiler.dialect_libraries import presto_library
   from ..compiler.dialect_libraries import snowflake_library
   from ..compiler.dialect_libraries import dremio_library
+  from ..compiler.dialect_libraries import databricks_library
 
 
 def Get(engine):
@@ -413,6 +415,59 @@ class Dremio(Dialect):
         return rule
 
 
+class Databricks(Dialect):
+    """Databricks dialect"""
+
+    def Name(self):
+        return 'Databricks'
+
+    def BuiltInFunctions(self):
+        return {
+            # not used, but should be added for consistency. Implement once databricks is available
+            # 'Range': '(SELECT array_agg(seq4()) FROM TABLE(generator(rowcount => %s)))',
+            'ToString': 'CAST(%s AS STRING)',
+            'ToInt64': 'CAST(%s AS BIGINT)',
+            'ToFloat64': 'CAST(%s AS DOUBLE)',
+            'AnyValue': 'ANY_VALUE(%s)',
+            'ILike': '({0}::string ILIKE {1})',
+            'Like': '({0}::string LIKE {1})',
+            'Replace': 'REPLACE({0}::string, {1}, {2})',
+            'ArrayConcat': 'ARRAY_JOIN({0}, {1})',
+            'JsonExtract': 'GET_JSON_OBJECT({0}, {1})',
+            'JsonExtractScalar': 'GET_JSON_OBJECT({0}, {1})',
+            'Length': 'ARRAY_SIZE(%s)',
+            'DateDiff': 'DATEDIFF({0}, {1}, {2})',
+            'IsNull': '({0} IS NULL)',
+            'LogicalOr': 'BOOL_OR(%s)',
+            'LogicalAnd': 'BOOL AND(%s)'
+        }
+
+    def InfixOperators(self):
+        return {
+            '++': 'CONCAT(%s, %s)',
+            'in': 'ARRAY_CONTAINS(%s, %s)'
+        }
+
+    def Subscript(self, record, subscript):
+        return '%s.%s' % (record, subscript)
+
+    def LibraryProgram(self):
+        return databricks_library.library
+
+    def UnnestPhrase(self):
+        # should be tested once databricks is available
+        return 'FLATTEN({0}) AS pushkin({1})'
+
+    def ArrayPhrase(self):
+        return 'ARRAY(%s)'
+
+    def GroupBySpecBy(self):
+        return 'index'
+
+    def DecorateCombineRule(self, rule, var):
+        return rule
+
+
 DIALECTS = {
     'bigquery': BigQueryDialect,
     'sqlite': SqLiteDialect,
@@ -420,6 +475,7 @@ DIALECTS = {
     'presto': Presto,
     'trino': Trino,
     'snowflake': Snowflake,
-    'dremio': Dremio
+    'dremio': Dremio,
+    'databricks': Databricks,
 }
 
